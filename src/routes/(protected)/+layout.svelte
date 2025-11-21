@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { logout } from '$lib/auth.remote';
-	import favicon from '$lib/assets/logo.svg';
 
 	let { children } = $props();
 </script>
-
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
 
 <div class="app-container">
 	<div class="background-pattern"></div>
