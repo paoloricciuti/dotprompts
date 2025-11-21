@@ -7,8 +7,9 @@ const handler = withMcpAuth(auth, async (request, session) => {
 	return (await transport.respond(request)) ?? new Response('', { status: 404 });
 });
 
-export function GET({ request }) {
-	return handler(request);
+export function GET() {
+	// 405 since on vercel the SSE stream would still fail after 5 minutes
+	return new Response(null, { status: 405 });
 }
 
 export function POST({ request }) {

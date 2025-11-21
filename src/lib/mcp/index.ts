@@ -118,8 +118,7 @@ export async function create_server(session: OAuthAccessToken) {
 			try {
 				const prompts = await get_prompts(session.userId);
 				return tool.text(JSON.stringify(prompts));
-			} catch (e) {
-				console.log(e);
+			} catch {
 				return tool.error('You need to be logged in to see your prompts');
 			}
 		}
