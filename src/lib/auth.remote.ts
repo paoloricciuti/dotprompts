@@ -21,7 +21,7 @@ async function login_social(provider: 'github' | 'google') {
 		returnHeaders: true,
 		body: {
 			provider,
-			callbackURL: BETTER_AUTH_URL
+			callbackURL: BETTER_AUTH_URL + '/dashboard'
 		}
 	});
 

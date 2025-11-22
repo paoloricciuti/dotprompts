@@ -140,7 +140,7 @@
 						<article class="prompt-card">
 							<div class="card-header">
 								<h3 class="prompt-title">
-									<a href={resolve('/(protected)/[id]', { id: prompt.id })}>
+									<a href={resolve('/dashboard/[id]', { id: prompt.id })}>
 										{prompt.title}
 									</a>
 								</h3>
@@ -159,7 +159,7 @@
 								</div>
 							{/if}
 							<div class="card-actions">
-								<a href={resolve('/(protected)/[id]', { id: prompt.id })} class="action-btn">
+								<a href={resolve('/dashboard/[id]', { id: prompt.id })} class="action-btn">
 									<svg height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
 										><path
 											fill="currentColor"

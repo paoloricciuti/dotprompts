@@ -9,7 +9,7 @@
 	<div class="background-pattern"></div>
 
 	<header class="app-header">
-		<a href={resolve('/')} class="brand">
+		<a href={resolve('/dashboard')} class="brand">
 			<div class="logo-mark">
 				<span class="dot"></span>
 				<span class="dot"></span>

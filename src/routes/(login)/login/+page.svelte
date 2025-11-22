@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { login, login_with_google } from '$lib/auth.remote';
+	import { resolve } from '$app/paths';
 </script>
 
 <main class="login-card">
@@ -56,7 +57,12 @@
 	</form>
 
 	<footer class="login-footer">
-		<p>Your prompts, beautifully organized</p>
+		<a href={resolve('/')} class="back-link">
+			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M19 12H5M12 19l-7-7 7-7" />
+			</svg>
+			Back to home
+		</a>
 	</footer>
 </main>
 
@@ -182,11 +188,19 @@
 		text-align: center;
 	}
 
-	.login-footer p {
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
 		font-family: var(--font-display);
 		font-size: 0.875rem;
 		color: var(--color-text-secondary);
-		margin: 0;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.back-link:hover {
+		color: var(--color-text-primary);
 	}
 
 	@media (max-width: 480px) {
