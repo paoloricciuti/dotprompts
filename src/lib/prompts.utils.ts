@@ -5,7 +5,7 @@ import { db } from './server/db';
 import { prompts } from './server/db/schema';
 function extract_inputs(prompt: string) {
 	const regex = /\{\{(.*?)\}\}/g;
-	return [...prompt.matchAll(regex)].map((match) => match[1].trim()).join(',');
+	return [...new Set([...prompt.matchAll(regex)].map((match) => match[1].trim()))].join(',');
 }
 
 export const CreatePromptSchema = v.object({
