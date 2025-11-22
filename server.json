@@ -1,0 +1,24 @@
+{
+	"$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+	"name": "com.dotprompts/dotprompts",
+	"description": ".prompts, the home to all your AI prompts, everywhere you need them.",
+	"version": "0.0.1",
+	"websiteUrl": "https://dotprompts.com",
+	"title": ".prompts",
+	"icons": [
+		{
+			"src": "https://dotprompts.com/logo.svg",
+			"mimeType": "image/svg+xml"
+		},
+		{
+			"src": "https://dotprompts.com/logo.png",
+			"mimeType": "image/png"
+		}
+	],
+	"remotes": [
+		{
+			"url": "https://dotprompts.com/mcp",
+			"type": "streamable-http"
+		}
+	]
+}

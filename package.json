@@ -3,6 +3,11 @@
 	"version": "0.0.1",
 	"type": "module",
 	"main": "src/index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/paoloricciuti/dotprompts.git"
+	},
+	"mcpName": "com.dotprompts/dotprompts",
 	"scripts": {
 		"start": "node src/lib/mcp/index.ts",
 		"dev": "vite dev --port 5175",
