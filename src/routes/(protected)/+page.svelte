@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Chip from '$lib/components/Chip.svelte';
+	import Prompt from '$lib/components/Prompt.svelte';
 	import Toggle from '$lib/components/Toggle.svelte';
 	import { create_prompt, delete_prompt, get_prompts } from '$lib/prompts.remote';
 
@@ -145,7 +146,7 @@
 								</h3>
 							</div>
 							<div class="prompt-preview">
-								<code>{prompt.prompt}</code>
+								<code><Prompt prompt={prompt.prompt} /></code>
 							</div>
 							{#if prompt.inputs}
 								<div class="prompt-inputs">
