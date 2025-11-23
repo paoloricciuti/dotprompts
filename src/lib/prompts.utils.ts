@@ -3,10 +3,7 @@ import { and, desc, eq } from 'drizzle-orm';
 import * as v from 'valibot';
 import { db } from './server/db';
 import { prompts } from './server/db/schema';
-function extract_inputs(prompt: string) {
-	const regex = /\{\{(.*?)\}\}/g;
-	return [...new Set([...prompt.matchAll(regex)].map((match) => match[1].trim()))].join(',');
-}
+import { extract_inputs } from './inputs.utils';
 
 export const CreatePromptSchema = v.object({
 	title: v.pipe(

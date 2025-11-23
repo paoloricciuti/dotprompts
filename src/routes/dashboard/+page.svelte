@@ -3,6 +3,7 @@
 	import Chip from '$lib/components/Chip.svelte';
 	import Prompt from '$lib/components/Prompt.svelte';
 	import Toggle from '$lib/components/Toggle.svelte';
+	import { extract_inputs } from '$lib/inputs.utils';
 	import { create_prompt, delete_prompt, get_prompts } from '$lib/prompts.remote';
 
 	const prompts = $derived(await get_prompts());
@@ -33,7 +34,33 @@
 				<h2>New Prompt</h2>
 			</div>
 
-			<form {...create_prompt} class="create-form">
+			<form
+				{...create_prompt.enhance(async ({ submit, data, form }) => {
+					await submit().updates(
+						get_prompts().withOverride((prompts) => {
+							return [
+								{
+									...data,
+									id: 'temp-' + crypto.randomUUID(),
+									user_id: '',
+									inputs: extract_inputs(data.prompt),
+									created_at: new Date(),
+									updated_at: new Date(),
+									as_tool: data.as_tool ?? false
+								},
+								...prompts
+							];
+						})
+					);
+					if (
+						!create_prompt.fields.allIssues()?.length ||
+						create_prompt.fields.allIssues()?.length === 0
+					) {
+						form.reset();
+					}
+				})}
+				class="create-form"
+			>
 				<div class="form-field">
 					<label for="prompt-title" class="field-label">
 						<span class="label-text">title</span>
@@ -137,7 +164,8 @@
 			{:else}
 				<div class="prompts-list">
 					{#each prompts as prompt (prompt.id)}
-						<article class="prompt-card">
+						{@const loading = prompt.user_id === ''}
+						<article class={['prompt-card', { loading }]}>
 							<div class="card-header">
 								<h3 class="prompt-title">
 									<a href={resolve('/dashboard/[id]', { id: prompt.id })}>
@@ -486,6 +514,10 @@
 		background: var(--color-surface);
 		padding: 1rem 1.25rem;
 		transition: background 0.15s ease;
+		&.loading {
+			opacity: 0.6;
+			pointer-events: none;
+		}
 	}
 
 	.prompt-card:hover {
