@@ -2,7 +2,9 @@
 	import { browser } from '$app/environment';
 	import Chip from '$lib/components/Chip.svelte';
 	import Toggle from '$lib/components/Toggle.svelte';
+	import { extract_inputs } from '$lib/inputs.utils.js';
 	import { delete_prompt, get_prompt, update_prompt } from '$lib/prompts.remote.js';
+	import { UpdatePromptSchema } from '$lib/prompts.schema.js';
 
 	let { params } = $props();
 
@@ -46,7 +48,22 @@
 				<h2>Configuration</h2>
 			</div>
 
-			<form {...update_prompt} class="edit-form">
+			<form
+				{...update_prompt.preflight(UpdatePromptSchema).enhance(async ({ submit, data, form }) => {
+					await update_prompt.validate();
+					form.reset();
+					submit().updates(
+						get_prompt(params.id).withOverride((prompt) => {
+							return {
+								...prompt,
+								...data,
+								inputs: extract_inputs(data.prompt)
+							};
+						})
+					);
+				})}
+				class="edit-form"
+			>
 				<input {...update_prompt.fields.id.as('hidden', prompt.id)} />
 
 				<div class="form-field">

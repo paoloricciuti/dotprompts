@@ -9,15 +9,8 @@ import { db } from '$lib/server/db';
 import { prompts } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { prompt, tool } from 'tmcp/utils';
-import {
-	create_prompt,
-	update_prompt,
-	delete_prompt,
-	get_prompts,
-	CreatePromptSchema,
-	UpdatePromptSchema,
-	DeletePromptSchema
-} from '$lib/prompts.utils';
+import { create_prompt, update_prompt, delete_prompt, get_prompts } from '$lib/prompts.utils';
+import { CreatePromptSchema, UpdatePromptSchema, DeletePromptSchema } from '$lib/prompts.schema';
 import slugify from 'slugify';
 import logo from '$lib/assets/logo.png?inline';
 

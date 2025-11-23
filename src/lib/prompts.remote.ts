@@ -4,13 +4,12 @@ import { prompts } from '$lib/server/db/schema';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import * as v from 'valibot';
+import { CreatePromptSchema, UpdatePromptSchema } from '$lib/prompts.schema';
 import {
-	CreatePromptSchema,
 	create_prompt as do_create_prompt,
 	delete_prompt as do_delete_prompt,
 	get_prompts as do_get_prompts,
 	update_prompt as do_update_prompt,
-	UpdatePromptSchema,
 	user_or_fallback
 } from './prompts.utils';
 
@@ -35,6 +34,7 @@ export const get_prompt = query(v.string(), async (id) => {
 
 export const create_prompt = form(CreatePromptSchema, async (prompt) => {
 	await do_create_prompt(prompt);
+	await new Promise((resolve) => setTimeout(resolve, 2000));
 	// Refresh prompts
 	await get_prompts().refresh();
 });
@@ -42,6 +42,7 @@ export const create_prompt = form(CreatePromptSchema, async (prompt) => {
 export const update_prompt = form(UpdatePromptSchema, async (prompt) => {
 	try {
 		await do_update_prompt(prompt);
+		await new Promise((resolve) => setTimeout(resolve, 2000));
 	} catch {
 		error(403, 'Forbidden');
 	}
@@ -56,6 +57,7 @@ export const delete_prompt = form(
 	async (prompt) => {
 		try {
 			await do_delete_prompt(prompt);
+			await new Promise((resolve) => setTimeout(resolve, 2000));
 		} catch {
 			error(403, 'Forbidden');
 		}

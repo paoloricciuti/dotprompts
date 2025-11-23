@@ -1,62 +1,9 @@
 import { user as get_user } from '$lib/auth.remote';
 import { and, desc, eq } from 'drizzle-orm';
-import * as v from 'valibot';
+import { extract_inputs } from './inputs.utils';
+import type { CreatePrompt, DeletePrompt, UpdatePrompt } from './prompts.schema';
 import { db } from './server/db';
 import { prompts } from './server/db/schema';
-import { extract_inputs } from './inputs.utils';
-
-export const CreatePromptSchema = v.object({
-	title: v.pipe(
-		v.string(),
-		v.nonEmpty('Title is required'),
-		v.description('The title of the prompt')
-	),
-	description: v.pipe(
-		v.string(),
-		v.nonEmpty('Description is required'),
-		v.description('The description of the prompt')
-	),
-	prompt: v.pipe(
-		v.string(),
-		v.nonEmpty('Prompt is required'),
-		v.description(
-			'The acual prompt, it can use variables like this {{variable_name}} that will be substituted when invoked with the respective input'
-		)
-	),
-	as_tool: v.pipe(
-		v.optional(v.boolean()),
-		v.description('Whether to expose this prompt also as a tool (other than a prompt) in MCP')
-	)
-});
-
-export const UpdatePromptSchema = v.object({
-	id: v.pipe(v.string(), v.description('The id of the prompt to update')),
-	title: v.pipe(
-		v.string(),
-		v.nonEmpty('Title is required'),
-		v.description('The title of the prompt')
-	),
-	description: v.pipe(
-		v.string(),
-		v.nonEmpty('Description is required'),
-		v.description('The description of the prompt')
-	),
-	prompt: v.pipe(
-		v.string(),
-		v.nonEmpty('Prompt is required'),
-		v.description(
-			'The acual prompt, it can use variables like this {{variable_name}} that will be substituted when invoked with the respective input'
-		)
-	),
-	as_tool: v.pipe(
-		v.optional(v.boolean(), false),
-		v.description('Whether to expose this prompt also as a tool (other than a prompt) in MCP')
-	)
-});
-
-export const DeletePromptSchema = v.object({
-	id: v.pipe(v.string(), v.description('The id of the prompt to delete'))
-});
 
 export async function user_or_fallback(id?: string) {
 	return id ? { user: { id } } : await get_user();
@@ -72,7 +19,7 @@ export async function get_prompts(id?: string) {
 }
 
 export async function create_prompt(
-	{ prompt, title, description, as_tool }: v.InferInput<typeof CreatePromptSchema>,
+	{ prompt, title, description, as_tool }: CreatePrompt,
 	id?: string
 ) {
 	const user = await user_or_fallback(id);
@@ -91,7 +38,7 @@ export async function create_prompt(
 }
 
 export async function update_prompt(
-	{ id, prompt, title, description, as_tool }: v.InferInput<typeof UpdatePromptSchema>,
+	{ id, prompt, title, description, as_tool }: UpdatePrompt,
 	user_id?: string
 ) {
 	const user = await user_or_fallback(user_id);
@@ -122,10 +69,7 @@ export async function update_prompt(
 	return updated;
 }
 
-export async function delete_prompt(
-	{ id }: v.InferInput<typeof DeletePromptSchema>,
-	user_id?: string
-) {
+export async function delete_prompt({ id }: DeletePrompt, user_id?: string) {
 	const user = await user_or_fallback(user_id);
 
 	// Verify ownership

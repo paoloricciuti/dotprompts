@@ -5,6 +5,7 @@
 	import Toggle from '$lib/components/Toggle.svelte';
 	import { extract_inputs } from '$lib/inputs.utils';
 	import { create_prompt, delete_prompt, get_prompts } from '$lib/prompts.remote';
+	import { CreatePromptSchema } from '$lib/prompts.schema';
 
 	const prompts = $derived(await get_prompts());
 </script>
@@ -35,8 +36,10 @@
 			</div>
 
 			<form
-				{...create_prompt.enhance(async ({ submit, data, form }) => {
-					await submit().updates(
+				{...create_prompt.preflight(CreatePromptSchema).enhance(async ({ submit, data, form }) => {
+					await create_prompt.validate();
+					form.reset();
+					submit().updates(
 						get_prompts().withOverride((prompts) => {
 							return [
 								{
@@ -52,12 +55,6 @@
 							];
 						})
 					);
-					if (
-						!create_prompt.fields.allIssues()?.length ||
-						create_prompt.fields.allIssues()?.length === 0
-					) {
-						form.reset();
-					}
 				})}
 				class="create-form"
 			>
@@ -196,7 +193,15 @@
 									>
 									<span>Edit</span>
 								</a>
-								<form {...delete_prompt.for(prompt.id)}>
+								<form
+									{...delete_prompt.for(prompt.id).enhance(async ({ submit }) => {
+										submit().updates(
+											get_prompts().withOverride((prompts) => {
+												return prompts.filter((p) => p.id !== prompt.id);
+											})
+										);
+									})}
+								>
 									<input {...delete_prompt.fields.id.as('hidden', prompt.id)} />
 
 									<button class="action-btn action-danger">
