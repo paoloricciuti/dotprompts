@@ -34,7 +34,6 @@ export const get_prompt = query(v.string(), async (id) => {
 
 export const create_prompt = form(CreatePromptSchema, async (prompt) => {
 	await do_create_prompt(prompt);
-	await new Promise((resolve) => setTimeout(resolve, 2000));
 	// Refresh prompts
 	await get_prompts().refresh();
 });
@@ -42,7 +41,6 @@ export const create_prompt = form(CreatePromptSchema, async (prompt) => {
 export const update_prompt = form(UpdatePromptSchema, async (prompt) => {
 	try {
 		await do_update_prompt(prompt);
-		await new Promise((resolve) => setTimeout(resolve, 2000));
 	} catch {
 		error(403, 'Forbidden');
 	}
@@ -57,7 +55,6 @@ export const delete_prompt = form(
 	async (prompt) => {
 		try {
 			await do_delete_prompt(prompt);
-			await new Promise((resolve) => setTimeout(resolve, 2000));
 		} catch {
 			error(403, 'Forbidden');
 		}
