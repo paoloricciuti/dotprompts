@@ -520,8 +520,30 @@
 		padding: 1rem 1.25rem;
 		transition: background 0.15s ease;
 		&.loading {
-			opacity: 0.6;
 			pointer-events: none;
+			position: relative;
+			overflow: hidden;
+		}
+		&.loading::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(
+				90deg,
+				transparent 0%,
+				var(--color-accent-subtle) 50%,
+				transparent 100%
+			);
+			animation: shimmer 1.5s infinite;
+		}
+	}
+
+	@keyframes shimmer {
+		0% {
+			transform: translateX(-100%);
+		}
+		100% {
+			transform: translateX(100%);
 		}
 	}
 
