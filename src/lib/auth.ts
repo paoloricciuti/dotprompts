@@ -9,12 +9,15 @@ import {
 	GOOGLE_CLIENT_SECRET
 } from '$env/static/private';
 import { mcp } from 'better-auth/plugins';
+import { sveltekitCookies } from 'better-auth/svelte-kit';
+import { getRequestEvent } from '$app/server';
 
 export const auth = betterAuth({
 	plugins: [
 		mcp({
 			loginPage: '/login'
-		})
+		}),
+		sveltekitCookies(getRequestEvent)
 	],
 	baseURL: BETTER_AUTH_URL,
 	emailAndPassword: {
