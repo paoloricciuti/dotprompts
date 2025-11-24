@@ -28,7 +28,8 @@ export async function create_server(session: OAuthAccessToken) {
 		{
 			name: 'dotprompts',
 			version: '1.0.0',
-			description: 'All your favorite prompts, wherever you need them.',
+			description:
+				'A collection of your personal prompts. If the user sends you a prompt use the description to understand how to use it. This description is only really relevant for tool calls where the user specifically tells you to do CRUD operations on their prompt list.',
 			icons
 		},
 		{
@@ -36,7 +37,9 @@ export async function create_server(session: OAuthAccessToken) {
 			capabilities: {
 				tools: {},
 				prompts: {}
-			}
+			},
+			instructions:
+				'If the user sends you a prompt use the description to understand how to use it. This description is only really relevant for tool calls where the user specifically tells you to do CRUD operations on their prompt list.'
 		}
 	);
 
