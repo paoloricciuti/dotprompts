@@ -1,3 +1,4 @@
+import { cors } from '$lib';
 import { auth } from '$lib/auth.js';
 import { create_server } from '$lib/mcp/index.js';
 import { withMcpAuth } from 'better-auth/plugins';
@@ -12,10 +13,22 @@ export function GET() {
 	return new Response(null, { status: 405 });
 }
 
-export function POST({ request }) {
-	return handler(request);
+export async function POST({ request }) {
+	const response = await handler(request);
+	if (response) {
+		response.headers.set('Access-Control-Allow-Origin', '*');
+		response.headers.set('Access-Control-Allow-Headers', '*');
+	}
+	return response;
 }
 
-export function DELETE({ request }) {
-	return handler(request);
+export async function DELETE({ request }) {
+	const response = await handler(request);
+	if (response) {
+		response.headers.set('Access-Control-Allow-Origin', '*');
+		response.headers.set('Access-Control-Allow-Headers', '*');
+	}
+	return response;
 }
+
+export const OPTIONS = cors;

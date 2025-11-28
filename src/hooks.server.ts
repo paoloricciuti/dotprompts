@@ -1,8 +1,9 @@
 import { auth } from '$lib/auth';
-import { svelteKitHandler } from 'better-auth/svelte-kit';
+import { isAuthPath, svelteKitHandler } from 'better-auth/svelte-kit';
 import { building } from '$app/environment';
 import { sequence } from '@sveltejs/kit/hooks';
 import { redirect } from '@sveltejs/kit';
+import { cors } from '$lib';
 
 export const handle = sequence(
 	async ({ event, resolve }) => {
@@ -16,7 +17,13 @@ export const handle = sequence(
 		}
 		return resolve(event);
 	},
-	({ event, resolve }) => {
+	async ({ event, resolve }) => {
+		if (event.request.method === 'OPTIONS' && isAuthPath(event.url.toString(), {})) {
+			return cors();
+		}
+		return resolve(event);
+	},
+	async ({ event, resolve }) => {
 		return svelteKitHandler({ event, resolve, auth, building });
 	}
 );

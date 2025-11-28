@@ -15,7 +15,8 @@ import { getRequestEvent } from '$app/server';
 export const auth = betterAuth({
 	plugins: [
 		mcp({
-			loginPage: '/login'
+			loginPage: '/login',
+			resource: BETTER_AUTH_URL + '/mcp'
 		}),
 		sveltekitCookies(getRequestEvent)
 	],
